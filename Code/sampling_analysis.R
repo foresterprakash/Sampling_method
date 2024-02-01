@@ -139,3 +139,15 @@ names(compare)
 compare$diff_volume <- abs(compare$stem_vol_ha_total - compare$stem_vol_ha_ccsp)
 
 ## 
+
+with(compare, plot(carbon_ton_total, carbon_ton_ccsp))
+abline(0, 1)
+
+which.max(compare$carbon_ton_total - compare$carbon_ton_ccsp)
+compare[15,]
+
+problem <- dat_id[ dat_id$plot_id %in%  "135-23-4",]
+with(problem, plot(distance, dbh, ylim=c(0, 50)))
+abline(0, 1)
+
+     
