@@ -10,6 +10,11 @@ library(tidyr)
 dat1 <- read_excel("Data/Compiled_1st_year.xlsx")
 dat2 <- read_excel("Data/compiled_2nd_year.xlsx")
 
+# Write combined data
+
+dat_combined <- rbind(dat1,dat2)
+write.csv(dat_combined, "Data/combined_LiDAR_data.csv")
+
 # Combine both data 
 
 dat <- rbind(dat1,dat2) %>%
@@ -139,3 +144,7 @@ names(compare)
 compare$diff_volume <- abs(compare$stem_vol_ha_total - compare$stem_vol_ha_ccsp)
 
 ## 
+library(ggplot2)
+p <- dat_id %>%
+  ggplot(mapping = aes(x = distance, y = dbh)) +
+  geom_point()
