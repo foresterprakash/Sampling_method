@@ -144,7 +144,22 @@ names(compare)
 compare$diff_volume <- abs(compare$stem_vol_ha_total - compare$stem_vol_ha_ccsp)
 
 ## 
+<<<<<<< HEAD
 library(ggplot2)
 p <- dat_id %>%
   ggplot(mapping = aes(x = distance, y = dbh)) +
   geom_point()
+=======
+
+with(compare, plot(carbon_ton_total, carbon_ton_ccsp))
+abline(0, 1)
+
+which.max(compare$carbon_ton_total - compare$carbon_ton_ccsp)
+compare[15,]
+
+problem <- dat_id[ dat_id$plot_id %in%  "135-23-4",]
+with(problem, plot(distance, dbh, ylim=c(0, 50)))
+abline(0, 1)
+
+     
+>>>>>>> 33e2722e6d53b1f7202cc7c3a153078de5efe780
