@@ -23,11 +23,12 @@ library(tidyr)
 
 dat <- read_excel("Data/combined_data_updated.xlsx", sheet = 1)
 
+# Columns to convert to numeric
+# cols_to_convert <- c("distance", "dbh", "height", "height_crown")
+# 
+# dat[, cols_to_convert] <- lapply(data[,cols_to_convert], as.numeric)
 
 dat$distance <- as.numeric(dat$distance)
-dat$height_crown <- as.numeric(dat$height_crown)
-dat$height
-
 dat <- dat %>%
   drop_na(dbh) %>%
   drop_na(height)
@@ -38,9 +39,9 @@ param <- read.csv("Data/Equations.csv")
 
 # Set a plot id as concatenates col,row and plot_number
 
-dat_id <- dat %>%
-  mutate(plot_id = paste(col,row,plot_number,sep = "-")) %>%
-  select(ncol(dat)+1,1:ncol(dat))
+# dat_id <- dat %>%
+#   mutate(plot_id = paste(col,row,plot_number,sep = "-")) %>%
+#   select(ncol(dat)+1,1:ncol(dat))
 
 # Rename the species code as it is in param
 
@@ -155,8 +156,11 @@ colnames(compare) <- headers
 # names(compare)
 
 compare$diff_volume <- abs(compare$stem_vol_ha_total - compare$stem_vol_ha_ccsp)
-compare$ratio_tree_out <- 
+compare$ratio_tree_out <- compare$trees_ha_ccsp/compare$trees_ha_total
 ## 
+
+plot(compare$ratio_tree_out,compare$diff_volume)
+
 
 library(ggplot2)
 p <- dat_id %>%
