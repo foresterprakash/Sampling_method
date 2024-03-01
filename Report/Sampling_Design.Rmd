@@ -10,7 +10,7 @@ output: pdf_document
 1. To analyse the current sampling technique CCSP in FRA.
 2. To test different CCSP alternatives and suggest the most accurate one.
 3. Effect of density distribution and diameter class distribution in CCSP method.
-4. To examine the possibility of best circular sample plot size for National and Subnational Inventory.
+4. To examine the possibility of best circular sample plot size for National and Sub-national Inventory.
 
 
 # Research Questions
