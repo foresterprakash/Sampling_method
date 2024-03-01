@@ -1,0 +1,25 @@
+---
+title: "Optimizing Sampling technique for National and Subnational Inventories with critical analysis of current sampling design"
+author: "Prakash Lamichhane"
+date: "2024-03-01"
+output: pdf_document
+---
+
+# Objectives
+
+1. To analyse the current sampling technique CCSP in FRA.
+2. To test different CCSP alternatives and suggest the most accurate one.
+3. Effect of density distribution and daimeter class distribution in CCSP method.
+4. To examine the possibility of best circular sample plot size for National and Subnational Inventory.
+
+
+# Research Questions
+
+1. Does currently applied Concentric Circular Sample Plot (CCSP) estimates accurate per ha data.
+2. Do the density distribution and diameter sizes of the trees has significant effect on the validity of CCSP.
+3. Can we shift to one circular sample plot method to simplify the sampling design.
+4. If yes, what could be the best sample plot size to justify national and subnational forest inventory.
+
+
+
+

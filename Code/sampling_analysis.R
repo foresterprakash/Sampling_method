@@ -5,12 +5,12 @@ library(dplyr)
 library(ggplot2)
 library(tidyr)
 
-# Load data
-
-dat1 <- read_excel("Data/Compiled_1st_year.xlsx")
-dat2 <- read_excel("Data/compiled_2nd_year.xlsx")
-
-# Write combined data
+# # Load data
+# 
+# dat1 <- read_excel("Data/Compiled_1st_year.xlsx")
+# dat2 <- read_excel("Data/compiled_2nd_year.xlsx")
+# 
+# # Write combined data
 
 dat_combined <- rbind(dat1,dat2)
 write.csv(dat_combined, "Data/combined_LiDAR_data.csv")
