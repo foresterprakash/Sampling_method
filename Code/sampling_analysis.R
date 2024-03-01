@@ -9,23 +9,28 @@ library(tidyr)
 # 
 # dat1 <- read_excel("Data/Compiled_1st_year.xlsx")
 # dat2 <- read_excel("Data/compiled_2nd_year.xlsx")
+# # 
+# # # Write combined data
 # 
-# # Write combined data
+# dat_combined <- rbind(dat1,dat2)
+# write.csv(dat_combined, "Data/combined_LiDAR_data.csv")
+# 
+# # Combine both data 
+# 
+# dat <- rbind(dat1,dat2) %>%
+#   filter(crown_class < 9)
+# dat$height <- as.numeric(dat$height)
 
-dat_combined <- rbind(dat1,dat2)
-write.csv(dat_combined, "Data/combined_LiDAR_data.csv")
+dat <- read_excel("Data/combined_data_updated.xlsx", sheet = 1)
 
-# Combine both data 
 
-dat <- rbind(dat1,dat2) %>%
-  filter(crown_class < 9)
-dat$height <- as.numeric(dat$height)
+dat$distance <- as.numeric(dat$distance)
+dat$height_crown <- as.numeric(dat$height_crown)
+dat$height
 
 dat <- dat %>%
   drop_na(dbh) %>%
   drop_na(height)
-
-dat[dat$height == 57,]$height <- 5.7
 
 # Load parameters data for further analysis
 
@@ -100,8 +105,9 @@ ccsp <- dat_analysed %>%
   filter(criteria == "in") %>%
   select(-criteria,)
 
-# Calculate pr hac information from ccsp expansion factor
 
+
+# Calculate pr hac information from ccsp expansion factor
 ccsp_analysis <- ccsp %>%
   select(-BA_sqm_ha,-stem_vol_ha,-stem_biomass_ton_ha,-total_biomass_ton_ha,-carbon_ton_ha) %>%
   mutate(BA_sqm_ha_ccsp = BA_sqm * exp_fac_ccsp) %>%
@@ -127,22 +133,29 @@ write.csv(plot_sum_ccsp,"Report/ccsp_summary.csv")
 ## Lets make a data to compare the summary of plots from both methods
 
 compare <- left_join(plot_sum_whole,plot_sum_ccsp, by = "plot_id")
-names(compare)[2] <- "plot_tree_total"
-names(compare)[3] <- "trees_ha_total"
-names(compare)[4] <- "BA_ha_total"
-names(compare)[5] <- "stem_vol_ha_total"
-names(compare)[6] <- "biomass_ha_total"
-names(compare)[7] <- "carbon_ton_total"
-names(compare)[8] <- "plot_tree_ccsp"
-names(compare)[9] <- "trees_ha_ccsp"
-names(compare)[10] <- "BA_ha_ccsp"
-names(compare)[11] <- "stem_vol_ha_ccsp"
-names(compare)[12] <- "biomass_ha_ccsp"
-names(compare)[13] <- "carbon_ton_ccsp"
-names(compare)
+
+headers <- c("plot_id", "plot_tree_total","trees_ha_total","BA_ha_total","stem_vol_ha_total","biomass_ha_total",
+             "carbon_ton_total","plot_tree_ccsp","trees_ha_ccsp","BA_ha_ccsp","stem_vol_ha_ccsp",
+             "biomass_ha_ccsp","carbon_ton_ccsp")
+
+colnames(compare) <- headers
+  
+# names(compare)[2] <- "plot_tree_total"
+# names(compare)[3] <- "trees_ha_total"
+# names(compare)[4] <- "BA_ha_total"
+# names(compare)[5] <- "stem_vol_ha_total"
+# names(compare)[6] <- "biomass_ha_total"
+# names(compare)[7] <- "carbon_ton_total"
+# names(compare)[8] <- "plot_tree_ccsp"
+# names(compare)[9] <- "trees_ha_ccsp"
+# names(compare)[10] <- "BA_ha_ccsp"
+# names(compare)[11] <- "stem_vol_ha_ccsp"
+# names(compare)[12] <- "biomass_ha_ccsp"
+# names(compare)[13] <- "carbon_ton_ccsp"
+# names(compare)
 
 compare$diff_volume <- abs(compare$stem_vol_ha_total - compare$stem_vol_ha_ccsp)
-
+compare$ratio_tree_out <- 
 ## 
 
 library(ggplot2)
