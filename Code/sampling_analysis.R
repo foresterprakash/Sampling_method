@@ -155,9 +155,14 @@ colnames(compare) <- headers
 # names(compare)[12] <- "biomass_ha_ccsp"
 # names(compare)[13] <- "carbon_ton_ccsp"
 # names(compare)
+source("Code/rough_gini.R", local = TRUE)
 
 compare$diff_volume <- abs(compare$stem_vol_ha_total-compare$stem_vol_ha_ccsp)
 compare$ratio_tree_out <- compare$plot_tree_ccsp/compare$plot_tree_total
+
+compare <- left_join(compare, calculate_gini(data = dat_analysed, x = "BA_sqm", group = "plot_id"), by = "plot_id")
+
+
 ## 
 
 plot(compare$ratio_tree_out,compare$diff_volume)
@@ -180,3 +185,5 @@ with(problem, plot(distance, dbh, ylim=c(0, 50)))
 abline(0,1)
 
 ## One more test with diameter distribution
+
+
