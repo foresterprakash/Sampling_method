@@ -1,6 +1,6 @@
 
 
-# We can use Gini coefficient to evaluate the size heterogenity
+# We can use Gini coefficient to evaluate the size heterogeneity
 # example papers: https://link.springer.com/article/10.1007/s11104-023-05874-2#Sec2
 # https://iforest.sisef.org/contents/?id=ifor4096-015
 
@@ -24,6 +24,19 @@ gini_coefficient <- function(data) {
   return(G)
 }
 
+
+## In my understanding #### (Prakash Lamichhane)
+
+gini <- function(data) {
+  data <- sort(data)
+  
+  # Calculate required variable
+  n <- length(data)
+  
+}
+
+
+
 # Calculate summary statistics by plot using group_by
 plot_summary <- dat_analysed %>%
   group_by(plot_id) %>%
@@ -38,6 +51,9 @@ plot_summary <- dat_analysed %>%
 #with(plot_summary, plot(gini_dbh, total_agb))
 #with(plot_summary, abline(0, 1))
 
+
+
+
 library(ggplot2)
 ggplot(plot_summary, aes(gini_dbh, total_agb)) +
   geom_point() +
@@ -46,3 +62,5 @@ ggplot(plot_summary, aes(gini_dbh, total_agb)) +
   xlab("Gini Index (dbh)") +
   ylab("Total Above-Ground Biomass")
 
+
+##

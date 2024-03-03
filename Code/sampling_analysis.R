@@ -43,6 +43,7 @@ param <- read.csv("Data/Equations.csv")
 #   mutate(plot_id = paste(col,row,plot_number,sep = "-")) %>%
 #   select(ncol(dat)+1,1:ncol(dat))
 
+dat_id <- dat
 # Rename the species code as it is in param
 
 dat_id$species_code <- ifelse(dat_id$species_code %in% param$species_code, dat_id$species_code, "OTHERS-1")
@@ -155,8 +156,8 @@ colnames(compare) <- headers
 # names(compare)[13] <- "carbon_ton_ccsp"
 # names(compare)
 
-compare$diff_volume <- abs(compare$stem_vol_ha_total - compare$stem_vol_ha_ccsp)
-compare$ratio_tree_out <- compare$trees_ha_ccsp/compare$trees_ha_total
+compare$diff_volume <- abs(compare$stem_vol_ha_total-compare$stem_vol_ha_ccsp)
+compare$ratio_tree_out <- compare$plot_tree_ccsp/compare$plot_tree_total
 ## 
 
 plot(compare$ratio_tree_out,compare$diff_volume)
@@ -176,5 +177,6 @@ compare[15,]
 
 problem <- dat_id[ dat_id$plot_id %in%  "135-23-4",]
 with(problem, plot(distance, dbh, ylim=c(0, 50)))
-abline(0, 1)
+abline(0,1)
 
+## One more test with diameter distribution

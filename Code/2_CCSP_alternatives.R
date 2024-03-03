@@ -1,6 +1,4 @@
-
-
-# first option let's keep the diameter breaks as the same but different distnace thresholds
+# first option let's keep the diameter breaks as the same but different distance thresholds
 
 cutoff_values <- c(4, 8, 15, 20)
 
@@ -30,7 +28,7 @@ for (i in 1:ncol(aa)) {
   all_combos[[i]] <- col_combos
 }
 
-# Combine column combinations using cartesian product
+# Combine column combinations using Cartesian product
 all_combos <- do.call(expand.grid, all_combos)
 
 
