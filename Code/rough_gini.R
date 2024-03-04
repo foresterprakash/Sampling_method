@@ -1,23 +1,4 @@
-# dat_gini <- select(dat_analysed,"plot_id","BA_sqm")
-# 
-# dat_gini <- dat_gini %>%
-#   group_by(plot_id)%>%
-#   arrange(plot_id,BA_sqm)%>%
-#   mutate(n = n()) %>%
-#   mutate(j = 1:n()) %>%
-#   ungroup() %>%
-#   mutate(numerator = (2 * j - n- 1)* BA_sqm) %>%
-#   mutate(denominator = BA_sqm*(n-1))
-# 
-# dat_gini_sum <- dat_gini %>%
-#   group_by(plot_id) %>%
-#   summarise(gini_coefficient = sum(numerator)/sum(denominator),
-#             mean_BA = mean(BA_sqm),
-#             median_BA = median(BA_sqm))
-
-
-
-## Do the same with making function 
+# Do Create a function called calculate_gini to calculate gini-coefficient 
 
 calculate_gini <- function(x = NULL, data = NULL, group = NULL) {
   if (is.null(data) && is.null(group)) {

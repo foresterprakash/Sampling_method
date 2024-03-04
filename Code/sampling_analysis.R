@@ -142,19 +142,6 @@ headers <- c("plot_id", "plot_tree_total","trees_ha_total","BA_ha_total","stem_v
 
 colnames(compare) <- headers
   
-# names(compare)[2] <- "plot_tree_total"
-# names(compare)[3] <- "trees_ha_total"
-# names(compare)[4] <- "BA_ha_total"
-# names(compare)[5] <- "stem_vol_ha_total"
-# names(compare)[6] <- "biomass_ha_total"
-# names(compare)[7] <- "carbon_ton_total"
-# names(compare)[8] <- "plot_tree_ccsp"
-# names(compare)[9] <- "trees_ha_ccsp"
-# names(compare)[10] <- "BA_ha_ccsp"
-# names(compare)[11] <- "stem_vol_ha_ccsp"
-# names(compare)[12] <- "biomass_ha_ccsp"
-# names(compare)[13] <- "carbon_ton_ccsp"
-# names(compare)
 source("Code/rough_gini.R", local = TRUE)
 
 compare$diff_volume <- abs(compare$stem_vol_ha_total-compare$stem_vol_ha_ccsp)
@@ -172,7 +159,7 @@ library(ggplot2)
 p <- dat_id %>%
   ggplot(mapping = aes(x = distance, y = dbh)) +
   geom_point()
-
+p
 
 with(compare, plot(carbon_ton_total, carbon_ton_ccsp))
 abline(0, 1)
@@ -186,4 +173,109 @@ abline(0,1)
 
 ## One more test with diameter distribution
 
+# Analysis of First research question
 
+# 1. 1. Does currently applied Concentric Circular Sample Plot (CCSP) estimates accurate per ha data?
+# Check the distribution of these volumes :
+
+par(mfrow = c(1,2))
+hist(compare$stem_vol_ha_total, xlab = "Volume per ha (Total Count)")
+hist(compare$stem_vol_ha_ccsp, xlab = "Volume per ha (CCSP)")
+# Hypothesis tests for normality test
+
+
+s1 <- shapiro.test(compare$stem_vol_ha_total)
+
+ifelse(s1$p.value < 0.05, "Not-Normal", "Normal")
+
+s2 <- shapiro.test(compare$stem_vol_ha_ccsp)
+
+ifelse(s2$p.value < 0.05, "Not-Normal", "Normal")
+
+# Both are normally distributed #
+
+#Fit on parametric assumptions
+
+# two groups so two sample test is applied
+
+# Variance test 
+
+data_var <- tidyr::pivot_longer(data = compare,cols = c("stem_vol_ha_total","stem_vol_ha_ccsp"),
+                                names_to = "group",values_to = "value")
+var.test1 <- with(data_var,car::leveneTest(value,group))
+
+ifelse(var.test1$`Pr(>F)`[1] < 0.05, "Heterogenous", "Equal Variance")
+rm(data_var)
+
+
+# Now run the two sample t test with equal variance
+
+result <- t.test(compare$stem_vol_ha_total, compare$stem_vol_ha_ccsp, var.equal = TRUE)
+
+
+# Decision
+
+ifelse(result$p.value < 0.05, "Significantly different", "Statistically not difference")
+
+
+# Plot 
+
+# Load required library
+library(ggplot2)
+
+# Assuming 'compare$stem_vol_ha_total' and 'compare$stem_vol_ha_ccsp' are your groups
+
+# Create a box plot
+library(ggplot2)
+library(dplyr)
+
+# Assuming 'compare$stem_vol_ha_total' and 'compare$stem_vol_ha_ccsp' are your groups
+
+re_dat <- reshape2::melt(compare[,c("stem_vol_ha_total", "stem_vol_ha_ccsp")])
+
+re_dat %>%
+  ggplot(mapping = aes(x = variable, y = value)) +
+  geom_boxplot() +
+  theme_minimal() +
+  labs(
+    x = "Category",
+    y = "Volume cum per ha"
+  ) +
+  scale_x_discrete(labels = c("Variable 1" = "Label 1", "Variable 2" = "Label 2", "Variable 3" = "Label 3")) +
+  scale_y_continuous(labels = function(x) paste0(x, " (custom label)"))
+
+ggstatsplot::ggbetweenstats(
+  data = re_dat,
+  x = "variable",
+  y = "value",
+  type = "parametric",
+  pairwise.display = "significant",
+  p.adjust.method = "holm",
+  xlab = NULL,
+  ylab = NULL,
+  k = 2L,
+  var.equal = TRUE,
+  conf.level = 0.95,
+  nboot = 100L,
+  tr = 0.2,
+  centrality.plotting = TRUE,
+  centrality.type = "parameteric")
+
+# Calculate RMSE then
+
+rmse <- caret::RMSE(compare$stem_vol_ha_ccsp,compare$stem_vol_ha_total)
+rmse
+# Calculate in Percentage by mean 
+rmse_percent <- rmse /mean(compare$stem_vol_ha_total) *  100
+rmse_percent
+
+# The error is below 10 % 
+
+# Can be acceptable in Many cases but needs to find
+# get better CCSP for lesser error
+
+Eval <- c(Metrics::mape(compare$stem_vol_ha_ccsp,compare$stem_vol_ha_total),
+  Metrics::rmse(compare$stem_vol_ha_ccsp,compare$stem_vol_ha_total),
+  Metrics::rae(compare$stem_vol_ha_total,compare$stem_vol_ha_ccsp))
+
+Eval
