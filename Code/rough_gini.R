@@ -17,7 +17,7 @@
 
 
 
-##Do the same with making function 
+## Do the same with making function 
 
 calculate_gini <- function(x = NULL, data = NULL, group = NULL) {
   if (is.null(data) && is.null(group)) {
