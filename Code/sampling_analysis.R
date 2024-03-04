@@ -274,8 +274,9 @@ rmse_percent
 # Can be acceptable in Many cases but needs to find
 # get better CCSP for lesser error
 
-Eval <- c(Metrics::mape(compare$stem_vol_ha_ccsp,compare$stem_vol_ha_total),
-  Metrics::rmse(compare$stem_vol_ha_ccsp,compare$stem_vol_ha_total),
-  Metrics::rae(compare$stem_vol_ha_total,compare$stem_vol_ha_ccsp))
+Eval <- c(mape = Metrics::mape(compare$stem_vol_ha_ccsp,compare$stem_vol_ha_total),
+  rmse = Metrics::rmse(compare$stem_vol_ha_ccsp,compare$stem_vol_ha_total),
+  rmse_percent = Metrics::rmse(compare$stem_vol_ha_ccsp,compare$stem_vol_ha_total)/mean(compare$stem_vol_ha_total),
+  rae = Metrics::rae(compare$stem_vol_ha_total,compare$stem_vol_ha_ccsp))
 
-Eval
+round(Eval,2)

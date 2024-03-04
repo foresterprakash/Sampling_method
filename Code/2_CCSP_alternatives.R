@@ -78,7 +78,7 @@ for(i in 1:nrow(all_combos)){
   
    # Calculate pr hac information from ccsp expansion factor
    ccsp_analysis <- ccsp %>%
-    select(-BA_sqm_ha,-stem_vol_ha,-stem_biomass_ton_ha,-total_biomass_ton_ha,-carbon_ton_ha) %>%
+    select(-stem_biomass_ton_ha,-total_biomass_ton_ha,-carbon_ton_ha) %>%
     mutate(BA_sqm_ha_ccsp = BA_sqm * exp_fac_ccsp) %>%
     mutate(stem_vol_ha_ccsp = stem_vol * exp_fac_ccsp) %>%
     mutate(total_biomass_ha_ccsp = total_biomass_ton * exp_fac_ccsp) %>%
